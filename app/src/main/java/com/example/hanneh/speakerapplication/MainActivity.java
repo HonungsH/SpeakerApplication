@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.DataInputStream;
@@ -29,6 +30,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mp_;
     MediaRecorder mr_;
     ImageButton playTestTone, startRecord;
-    TextView display;
+    TextView display, timer;
     Button dataB, majs;
     connectToServer myConnect = null;
+    ProgressBar recordingProgressBar;
+    int progress = 0;
+    int progressValue;
+    int seconds, minute, hour;
+    Timer t;
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
@@ -56,7 +64,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        display = (TextView) findViewById(R.id.display);
+        display = findViewById(R.id.display);
+
+        recordingProgressBar = findViewById(R.id.progressBar2);
+        //progressValue = recordingProgressBar.getProgress();
+        recordingProgressBar.setVisibility(View.GONE);
+
+        timer = findViewById(R.id.timer);
+
+
 
 
 
@@ -84,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        startRecord = (ImageButton) findViewById(R.id.record);
+        startRecord = findViewById(R.id.record);
         startRecord.setBackgroundResource(R.drawable.muted);
         startRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,15 +109,20 @@ public class MainActivity extends AppCompatActivity {
                 if (recording) {
                     display.setText("RECORDING");
                     view.setBackgroundResource(R.drawable.microphone);
+                    recordingProgressBar.setVisibility(view.VISIBLE);
+
+
                 } else {
                     display.setText("recording stopped bitch");
                     view.setBackgroundResource(R.drawable.muted);
+                    recordingProgressBar.setVisibility(view.GONE);
                 }
             }
         });
 
 
-        playTestTone = (ImageButton) findViewById(R.id.play);
+
+        playTestTone = findViewById(R.id.play);
         playTestTone.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -110,6 +131,25 @@ public class MainActivity extends AppCompatActivity {
                 display.setText("PLAYING TESTTONE.WAV");
             }
         });
+    }
+
+    private void setProgressValue(final int progress) {
+
+        // set the progress
+        recordingProgressBar.setProgress(progress);
+        // thread is used to change the progress value
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setProgressValue(progress + 1);
+            }
+        });
+        thread.start();
     }
 
 
@@ -127,6 +167,17 @@ public class MainActivity extends AppCompatActivity {
 
             mp_.start();
         }
+
+    private void playOrStop() {
+
+        if (recording) {
+            recording = false;
+            stopRecording();
+        } else {
+            recording = true;
+            startRecording();
+        }
+    }
 
         public void startRecording() {
 
@@ -151,9 +202,41 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     mr_.prepare();
                     mr_.start();
+
                 } catch (IOException e) {
                     Log.e(DEBUG, "prepare() failed", e);
                 }
+
+                t = new Timer("RecordTime", true);
+                minute = 0;
+                seconds = 0;
+                t.schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        timer.post(new Runnable() {
+
+                            public void run() {
+                                seconds++;
+                                if (seconds == 60) {
+                                    seconds = 0;
+                                    minute++;
+                                }
+
+                                timer.setText(
+                                        (minute > 9 ? minute : ("0" + minute))
+                                        + ":"
+                                        + (seconds > 9 ? seconds : "0" + seconds));
+
+
+                            }
+                        });
+
+                    }
+                }, 1000, 1000);
+
+
+                setProgressValue(progress);
             }
 
 
@@ -162,22 +245,15 @@ public class MainActivity extends AppCompatActivity {
 
         private void stopRecording() {
             Log.e(DEBUG, "RECORDING STOPPED");
+            t.cancel();
+            timer.setText("00" + ":" + "00");
             mr_.stop();
             mr_.reset();
             mr_.release();
             mr_ = null;
         }
 
-        private void playOrStop() {
 
-            if (recording) {
-                recording = false;
-                stopRecording();
-            } else {
-                recording = true;
-                startRecording();
-            }
-        }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void printAllIpInNetwork() {
