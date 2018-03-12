@@ -1,6 +1,7 @@
 package com.example.hanneh.speakerapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     int progressValue;
     int seconds, minute, hour;
     Timer t;
+    Handler handler = new Handler();
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         recordingProgressBar = findViewById(R.id.progressBar2);
         //progressValue = recordingProgressBar.getProgress();
         recordingProgressBar.setVisibility(View.GONE);
+        recordingProgressBar.getIndeterminateDrawable().setColorFilter(
+                Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 
         timer = findViewById(R.id.timer);
 
@@ -132,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void setProgressValue(final int progress) {
 
@@ -350,7 +356,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String s = "No Breakfast is wrong Breakfast";
 
+                Log.e(MAJS, "establish connection");
+
                 if (myConnect == null || myConnect.getStatus() != AsyncTask.Status.RUNNING) {
+                    Log.e(MAJS, "Starting connection");
+
                     myConnect = new connectToServer();
                     myConnect.execute();
 
@@ -379,7 +389,16 @@ public class MainActivity extends AppCompatActivity {
 
 
             protected Void doInBackground(Void... voids) {
+                ServerCommunication communication = new ServerCommunication(host, port);
+                Packet hello = new Packet();
+                hello.addHeader((byte)0x00);
+                hello.addString("Hannebajs");
+                hello.finalize();
+                communication.send(hello);
+                Packet packet = communication.receive();
+                Log.e(MAJS, String.valueOf(packet.getSize()));
 
+                /*
                 Socket sock;
                 DataInputStream inFromServer;
                 byte[] bytearray = new byte[1024];
@@ -416,8 +435,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(MAJS, "COULD NOT CREATE SOCKET");
                    return null;
                 }
-
+*/
             return null;
+
             }
         }
 
