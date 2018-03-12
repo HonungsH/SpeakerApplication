@@ -23,12 +23,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     AudioRecord audioRecord;
     private static final String DEBUG = "DEBUG";
-    private static final String MAJS = "YeppYEPP";
+    private static final String MAJS = "OUR_DEBUG";
     private boolean recording = false;
     Context c;
 
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 establishConnectionToServer();
-                //Log.e(MAJS, "Hej");
+
 
             }
         });
@@ -305,10 +302,8 @@ public class MainActivity extends AppCompatActivity {
          private static final int port = 10200;
 
 
-
             protected Void doInBackground(Void... voids) {
 
-                String in;
                 Socket sock;
                 DataInputStream inFromServer;
                 byte[] bytearray = new byte[1024];
