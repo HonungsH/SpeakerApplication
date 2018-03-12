@@ -1,9 +1,5 @@
 package com.example.hanneh.speakerapplication;
 
-/**
- * Created by niklasc on 2018-03-12.
- */
-
 import java.util.*;
 import java.nio.ByteBuffer;
 
@@ -12,15 +8,24 @@ public class Packet {
     private boolean finalized_;
     private int read_;
 
-    private void addBytes(byte[] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            packet_.add(bytes[i]);
-        }
-    }
-
     public Packet() {
+        packet_ = new ArrayList<>();
         finalized_ = false;
         read_ = 0;
+    }
+
+    public Packet(PartialPacket partial_packet) {
+        packet_ = partial_packet.getPrivateList();
+        finalized_ = true;
+        read_ = 0;
+
+        ArrayList<Byte> final_packet = new ArrayList<>();
+
+        for (int i = 4; i < packet_.size(); i++) {
+            final_packet.add(packet_.get(i));
+        }
+
+        packet_ = final_packet;
     }
 
     public void addHeader(byte header) {
@@ -107,5 +112,11 @@ public class Packet {
         final_packet.addAll(packet_);
         packet_ = final_packet;
         finalized_ = true;
+    }
+
+    private void addBytes(byte[] bytes) {
+        for (int i = 0; i < bytes.length; i++) {
+            packet_.add(bytes[i]);
+        }
     }
 }
