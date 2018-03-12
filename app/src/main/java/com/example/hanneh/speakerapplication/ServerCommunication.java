@@ -45,8 +45,14 @@ public class ServerCommunication {
         Log.e(WARNING, "Connected to server");
     }
 
-    public int send(Packet packet) {
-        return -1;
+    public void send(Packet packet) {
+        try {
+            out_stream_.write(packet.getData(), packet.getSent(), packet.getSize() - packet.getSent());
+            out_stream_.flush();
+        } catch (Exception e) {
+            Log.e(WARNING, "Lost connection to server");
+            e.printStackTrace();
+        }
     }
 
     public Packet receive() {

@@ -7,17 +7,20 @@ public class Packet {
     private ArrayList<Byte> packet_;
     private boolean finalized_;
     private int read_;
+    private int sent_;
 
     public Packet() {
         packet_ = new ArrayList<>();
         finalized_ = false;
         read_ = 0;
+        sent_ = 0;
     }
 
     public Packet(PartialPacket partial_packet) {
         packet_ = partial_packet.getPrivateList();
         finalized_ = true;
         read_ = 0;
+        sent_ = 0;
 
         ArrayList<Byte> final_packet = new ArrayList<>();
 
@@ -112,6 +115,18 @@ public class Packet {
         final_packet.addAll(packet_);
         packet_ = final_packet;
         finalized_ = true;
+    }
+
+    public void addSent(int sent) {
+        sent_ += sent;
+    }
+
+    public boolean fullySent() {
+        return sent_ >= packet_.size();
+    }
+
+    public int getSent() {
+        return sent_;
     }
 
     private void addBytes(byte[] bytes) {
