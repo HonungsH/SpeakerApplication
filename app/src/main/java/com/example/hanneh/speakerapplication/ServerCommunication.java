@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class ServerCommunication {
-    public static final String WARNING = "WARNING";
+    public static final String WARNING = "OUR_DEBUG";
 
     private Socket socket_;
     private String host_;
@@ -41,6 +41,8 @@ public class ServerCommunication {
         }
 
         buffer_ = new byte[4096];
+
+        Log.e(WARNING, "Connected to server");
     }
 
     public int send(Packet packet) {
@@ -48,6 +50,8 @@ public class ServerCommunication {
     }
 
     public Packet receive() {
+        Log.e(WARNING, "Trying to receive packet");
+
         PartialPacket partial_packet = new PartialPacket();
 
         while (true) {
@@ -66,12 +70,20 @@ public class ServerCommunication {
                 return new Packet();
             }
 
+            Log.e(WARNING, "Received some bytes, trying to assemble packet");
+            Log.e(WARNING, String.valueOf(received));
+
             assemblePacket(received, partial_packet);
+
+            Log.e(WARNING, "Current size of packet");
+            Log.e(WARNING, String.valueOf(partial_packet.getSize()));
 
             if (partial_packet.isFinished()) {
                 break;
             }
         }
+
+        Log.e(WARNING, "Received packet");
 
         return new Packet(partial_packet);
     }
