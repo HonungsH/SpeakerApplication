@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton playTestTone, startRecord;
     TextView display;
     Button dataB, majs;
+    connectToServer myConnect = null;
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
         dataB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleMyPancake();
+
+                printAllIpInNetwork();
             }
         });
 
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         majs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eatSnacksForBreakfast();
+                establishConnectionToServer();
                 //Log.e(MAJS, "Hej");
 
             }
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private void handleMyPancake() {
+    private void printAllIpInNetwork() {
 
         new NetworkSniffTask(this).execute();
     }
@@ -191,10 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
         private static final String TAG = "NetWorkSniffTask";
 
-
         private WeakReference<Context> mContextRef;
-        // Context context;
-
 
         public NetworkSniffTask(Context context) {
             mContextRef = new WeakReference<Context>(context);
@@ -255,10 +254,6 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
 
-
-
-
-
                                 }
 
                             });
@@ -278,12 +273,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        protected void eatSnacksForBreakfast(){
+        protected void establishConnectionToServer(){
+
                 String s = "No Breakfast is wrong Breakfast";
-            new connectToServer().execute();
 
+                if (myConnect == null || myConnect.getStatus() != AsyncTask.Status.RUNNING) {
+                    myConnect = new connectToServer();
+                    myConnect.execute();
 
+                    return;
+                }
 
+                // It's already running
+                myConnect.cancel(true);
+                Log.e(MAJS, "Debug: DISCONNECTED FROM SERVER");
+
+                /*
+                if (myConnect.getStatus() == AsyncTask.Status.RUNNING){
+                    myConnect.cancel(true);
+                    Log.e(MAJS, "CONNECTION STOPPED");
+
+                }else {
+                    myConnect = new connectToServer();
+                    myConnect.execute();
+                }
+                */
         }
         class connectToServer extends AsyncTask<Void, Void, Void> {
 
@@ -292,17 +306,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            protected Void doInBackground(Void... voids){
+            protected Void doInBackground(Void... voids) {
+
                 String in;
                 Socket sock;
                 DataInputStream inFromServer;
                 byte[] bytearray = new byte[1024];
                 int data_read;
                 try {
-                    Log.e(MAJS, "HEREEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                    Log.e(MAJS, "We Are HERE");
                     sock = new Socket(host, port);
 
-                    Log.e(MAJS, "CONNECTION ESTABLISHED");
+                    Log.e(MAJS, "CONNECTION ESTABLISHED/SOCKET CREATED");
 
 
                     inFromServer = new DataInputStream(sock.getInputStream());
@@ -314,8 +329,13 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.e(MAJS, String.valueOf(data_read));
                         if(data_read < 0) {
+
                             sock.close();
                             break;
+                        }
+                        if (isCancelled()) {
+                            sock.close();
+                            return null;
                         }
                     }
 
@@ -325,37 +345,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(MAJS, "COULD NOT CREATE SOCKET");
                    return null;
                 }
-return null;
+
+            return null;
             }
         }
 
-        protected boolean openConnection(String host, int port) {
 
-         String in;
-         Socket sock;
-         BufferedReader inFromServer;
-            try {
-                sock = new Socket(host, port);
-                Log.e(MAJS, "CONNECTION ESTABLISHED");
-
-                while(true) {
-                    inFromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                    in = inFromServer.readLine();
-                    Log.e(MAJS, in);
-
-                    sock.close();
-                    break;
-                }
-                return true;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(MAJS, "COULD NOT CREATE SOCKET");
-                return false;
-            }
-
-
-        }
 
 
 
