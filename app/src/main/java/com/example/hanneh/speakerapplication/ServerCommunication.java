@@ -1,5 +1,6 @@
 package com.example.hanneh.speakerapplication;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.DataInputStream;
@@ -43,6 +44,16 @@ public class ServerCommunication {
         buffer_ = new byte[4096];
 
         Log.e(WARNING, "Connected to server");
+    }
+
+    public void close() {
+        try {
+            socket_.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.e(WARNING, "DISCONNECTED FROM SERVER");
     }
 
     public void send(Packet packet) {

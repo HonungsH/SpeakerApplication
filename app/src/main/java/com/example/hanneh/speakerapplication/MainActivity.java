@@ -1,6 +1,7 @@
 package com.example.hanneh.speakerapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -11,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +22,9 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -36,7 +41,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private int channelConfiguration = AudioFormat.CHANNEL_IN_MONO, audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
 
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     MediaRecorder mr_;
     ImageButton playTestTone, startRecord;
     TextView display, timer;
-    Button dataB, majs;
+    Button dataB, majs, mapB, mip;
     connectToServer myConnect = null;
     ProgressBar recordingProgressBar;
     int progress = 0;
@@ -70,14 +75,32 @@ public class MainActivity extends AppCompatActivity {
         display = findViewById(R.id.display);
 
         recordingProgressBar = findViewById(R.id.progressBar2);
-        //progressValue = recordingProgressBar.getProgress();
+
         recordingProgressBar.setVisibility(View.GONE);
         recordingProgressBar.getIndeterminateDrawable().setColorFilter(
                 Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 
         timer = findViewById(R.id.timer);
 
+        mip = findViewById(R.id.ip);
+        mip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(MainActivity.this, RecyclerViewActivity.class);
+                MainActivity.this.startActivity(newIntent);
+            }
+        });
 
+
+
+        mapB = findViewById(R.id.map);
+        mapB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, MapActivity.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
 
 
 
@@ -136,7 +159,10 @@ public class MainActivity extends AppCompatActivity {
                 display.setText("PLAYING TESTTONE.WAV");
             }
         });
+
+
     }
+
 
 
     private void setProgressValue(final int progress) {
@@ -313,20 +339,21 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int k = 0; k < 255; k++) {
                        final String prefix = prefix_base + String.valueOf(k);
-
-
-
+                      // Log.e(MAJS, "ARE WE HERE");
                             Thread t = new Thread(new Runnable() {
+
                                 public void run() {
+
                                     for (int i = 0; i < 255; i++) {
+                                      //Log.e(MAJS, "MJAAAAAAAAAAAAAUUUUUUUUUUUUUU");
 
                                         String testIp = prefix + "." + String.valueOf(i);
                                         InetAddress address = null;
                                         try {
                                             address = InetAddress.getByName(testIp);
-                                            if (address.isReachable(1)) {
+                                            if (address.isReachable(500)) {
                                                 //publishProgress(testIp);
-                                                Log.e(TAG, "HOST: " + "(" + testIp + ") REACHABLE!" + '\n');
+                                                Log.e(MAJS, "HOST: " + "(" + testIp + ") REACHABLE!" + '\n');
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -341,8 +368,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                }catch (Throwable t) {
-                Log.e(TAG, "Well that's not good.", t);
+                } catch (Throwable t) {
+                Log.e(MAJS, "SOMETHING WENT WRONG", t);
             }
 
             return null;
@@ -363,13 +390,19 @@ public class MainActivity extends AppCompatActivity {
 
                     myConnect = new connectToServer();
                     myConnect.execute();
-
+                    Log.e(MAJS, myConnect.getStatus().toString());
                     return;
+
+
                 }
 
-                // It's already running
                 myConnect.cancel(true);
-                Log.e(MAJS, "Debug: DISCONNECTED FROM SERVER");
+               // Log.e(MAJS, "Debug: DISCONNECTED FROM SERVER");
+
+                myConnect = null;
+
+                // It's already running
+
 
                 /*
                 if (myConnect.getStatus() == AsyncTask.Status.RUNNING){
@@ -394,9 +427,19 @@ public class MainActivity extends AppCompatActivity {
                 hello.addHeader((byte)0x00);
                 hello.addString("Hannebajs");
                 hello.finalize();
-                communication.send(hello);
-                Packet packet = communication.receive();
-                Log.e(MAJS, String.valueOf(packet.getSize()));
+                while(true){
+                    communication.send(hello);
+                    SystemClock.sleep(2000);
+                    Packet packet = communication.receive();
+                    Log.e(MAJS, String.valueOf(packet.getSize()));
+                    if (isCancelled()){
+                        break;
+                    }
+                }
+
+
+
+
 
                 /*
                 Socket sock;
@@ -435,8 +478,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(MAJS, "COULD NOT CREATE SOCKET");
                    return null;
                 }
+
+
 */
-            return null;
+                communication.close();
+
+                return null;
 
             }
         }
