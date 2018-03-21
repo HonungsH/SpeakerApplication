@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class MapActivity extends BaseMenuActivity {
     private Bitmap mBitmap;
     private ImageView mImageView;
     private TextView textView;
-
+    private Button btn;
 
 
 
@@ -40,6 +41,15 @@ public class MapActivity extends BaseMenuActivity {
 
         onDraw(mImageView);
 
+        btn = findViewById(R.id.btn);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Packet packet = ServerRunLocalization.run(IpList.getIpList());
+                Log.e(TAG, String.valueOf(packet.getSize()));
+            }
+        });
 
 
     }

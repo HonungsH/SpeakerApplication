@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity  {
     private static final String DEBUG = "DEBUG";
     private static final String MAJS = "OUR_DEBUG";
     private boolean recording = false;
+    public static final String host = "172.25.12.147";
+    public static final int port = 10200;
     Context c;
 
     MediaPlayer mp_;
@@ -437,50 +439,6 @@ public class MainActivity extends AppCompatActivity  {
                     }
                 }
 
-
-
-
-
-                /*
-                Socket sock;
-                DataInputStream inFromServer;
-                byte[] bytearray = new byte[1024];
-                int data_read;
-                try {
-                    Log.e(MAJS, "We Are HERE");
-                    sock = new Socket(host, port);
-
-                    Log.e(MAJS, "CONNECTION ESTABLISHED/SOCKET CREATED");
-
-
-                    inFromServer = new DataInputStream(sock.getInputStream());
-
-
-                    while(true) {
-
-                        data_read = inFromServer.read(bytearray, 0, bytearray.length);
-
-                        Log.e(MAJS, String.valueOf(data_read));
-                        if(data_read < 0) {
-
-                            sock.close();
-                            break;
-                        }
-                        if (isCancelled()) {
-                            sock.close();
-                            return null;
-                        }
-                    }
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.e(MAJS, "COULD NOT CREATE SOCKET");
-                   return null;
-                }
-
-
-*/
                 communication.close();
 
                 return null;
