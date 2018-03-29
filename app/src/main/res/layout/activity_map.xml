@@ -8,20 +8,19 @@
 
     <ImageView
         android:id="@+id/myimageview"
-        android:layout_width="256dp"
+        android:layout_width="345dp"
         android:layout_height="336dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:maxHeight="459dp"
         android:maxWidth="393dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.388"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/coolText"
@@ -55,7 +54,6 @@
         android:background="@drawable/circle"
 
 
-
         android:drawableTop="@android:drawable/ic_dialog_map"
         android:paddingTop="20dp"
         android:text="DRAW"
@@ -67,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.029"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.785" />
+        app:layout_constraintVertical_bias="0.891" />
 
 
 </android.support.constraint.ConstraintLayout>
