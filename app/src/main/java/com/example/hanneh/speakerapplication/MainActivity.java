@@ -1,5 +1,6 @@
 package com.example.hanneh.speakerapplication;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,14 +21,21 @@ import android.os.Bundle;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.support.v7.widget.CardView;
 import android.text.format.Formatter;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,18 +62,21 @@ public class MainActivity extends AppCompatActivity  {
     public static final String host = "172.25.12.147";
     public static final int port = 10200;
     Context c;
-
+    int minHeight;
+    private Animation animationUp;
+    private Animation animationDown;
     MediaPlayer mp_;
     MediaRecorder mr_;
     ImageButton playTestTone, startRecord;
-    TextView display, timer;
-    Button dataB, majs, mapB, mip;
+    TextView display, timer, server;
+    CardView dataB, majs, mapB, mip, eq;
     connectToServer myConnect = null;
     ProgressBar recordingProgressBar;
     int progress = 0;
     int progressValue;
     int seconds, minute, hour;
     Timer t;
+    ImageView imView;
     Handler handler = new Handler();
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
@@ -74,25 +85,35 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        display = findViewById(R.id.display);
 
-        recordingProgressBar = findViewById(R.id.progressBar2);
+        animationUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+        animationDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+
+
+        // display = findViewById(R.id.display);
+
+     /*   recordingProgressBar = findViewById(R.id.progressBar2);
 
         recordingProgressBar.setVisibility(View.GONE);
         recordingProgressBar.getIndeterminateDrawable().setColorFilter(
                 Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
+*/
+        // timer = findViewById(R.id.timer);
 
-        timer = findViewById(R.id.timer);
+
+
+
+
 
         mip = findViewById(R.id.ip);
         mip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent newIntent = new Intent(MainActivity.this, RecyclerViewActivity.class);
                 MainActivity.this.startActivity(newIntent);
             }
         });
-
 
 
         mapB = findViewById(R.id.map);
@@ -105,9 +126,8 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-
         Log.e(MainActivity.DEBUG, "OnCreate HAPPENED");
-
+/*
         dataB = findViewById(R.id.data);
         dataB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,19 +136,45 @@ public class MainActivity extends AppCompatActivity  {
                 printAllIpInNetwork();
             }
         });
-
-        majs = findViewById(R.id.majs);
+*/      server = findViewById(R.id.textserver);
+        imView = new ImageView(this);
+        imView.findViewById(R.id.imview);
+        majs = findViewById(R.id.server);
         majs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                establishConnectionToServer();
+
+                if(imView.getVisibility() == view.GONE){
+                    imView.setVisibility(view.GONE);
+                    view.startAnimation(animationUp);
+                    //server.setVisibility(View.VISIBLE);
+                }
+                else{
+                    imView.setVisibility(view.VISIBLE
+                    );
+                    view.startAnimation(animationDown);
 
 
+                }
             }
+
+                // establishConnectionToServer();
+
+
+
         });
 
 
+        eq = findViewById(R.id.equalizer);
+        eq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, EqualizerActivity.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
 
+/*
 
         startRecord = findViewById(R.id.record);
         startRecord.setBackgroundResource(R.drawable.muted);
@@ -143,7 +189,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
                 } else {
-                    display.setText("recording stopped bitch");
+                    display.setText("Recording stopped");
                     view.setBackgroundResource(R.drawable.muted);
                     recordingProgressBar.setVisibility(view.GONE);
                 }
@@ -287,7 +333,8 @@ public class MainActivity extends AppCompatActivity  {
             mr_ = null;
         }
 
-
+*/
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void printAllIpInNetwork() {

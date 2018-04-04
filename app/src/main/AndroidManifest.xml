@@ -26,7 +26,8 @@
         <activity android:name=".ListIPActivity" />
         <activity android:name=".RecyclerViewActivity" />
         <activity android:name=".SpeakerActivity" />
-        <activity android:name=".BaseMenuActivity"></activity>
+        <activity android:name=".BaseMenuActivity" />
+        <activity android:name=".EqualizerActivity"></activity>
     </application>
 
 </manifest>
