@@ -27,7 +27,10 @@
         <activity android:name=".RecyclerViewActivity" />
         <activity android:name=".SpeakerActivity" />
         <activity android:name=".BaseMenuActivity" />
-        <activity android:name=".EqualizerActivity"></activity>
+        <activity
+            android:name=".EqActivity"
+            android:label="@string/title_activity_eq"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

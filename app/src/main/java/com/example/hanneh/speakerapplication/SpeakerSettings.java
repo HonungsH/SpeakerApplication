@@ -18,6 +18,7 @@ public class SpeakerSettings {
     public ArrayList<Speaker> speakers;
 
     public SpeakerSettings(){
+
         speakers = new ArrayList<>();
     }
 

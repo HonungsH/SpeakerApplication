@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity  {
     MediaPlayer mp_;
     MediaRecorder mr_;
     ImageButton playTestTone, startRecord;
-    TextView display, timer, server;
-    CardView dataB, majs, mapB, mip, eq;
+    TextView display, timer;
+    CardView dataB, connectServer, mapB, mip, eq;
     connectToServer myConnect = null;
     ProgressBar recordingProgressBar;
     int progress = 0;
@@ -102,7 +102,14 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-
+        connectServer = findViewById(R.id.connect);
+        connectServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
 
 
         mip = findViewById(R.id.ip);
@@ -127,49 +134,15 @@ public class MainActivity extends AppCompatActivity  {
 
 
         Log.e(MainActivity.DEBUG, "OnCreate HAPPENED");
-/*
-        dataB = findViewById(R.id.data);
-        dataB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                printAllIpInNetwork();
-            }
-        });
-*/      server = findViewById(R.id.textserver);
-        imView = new ImageView(this);
-        imView.findViewById(R.id.imview);
-        majs = findViewById(R.id.server);
-        majs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(imView.getVisibility() == view.GONE){
-                    imView.setVisibility(view.GONE);
-                    view.startAnimation(animationUp);
-                    //server.setVisibility(View.VISIBLE);
-                }
-                else{
-                    imView.setVisibility(view.VISIBLE
-                    );
-                    view.startAnimation(animationDown);
 
 
-                }
-            }
-
-                // establishConnectionToServer();
-
-
-
-        });
 
 
         eq = findViewById(R.id.equalizer);
         eq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, EqualizerActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, EqActivity.class);
                 MainActivity.this.startActivity(myIntent);
             }
         });

@@ -24,7 +24,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PersonViewHolder>{
     MyAdapter(String[] ips) {
         this.ips = ips;
 
-        speakers.clear();
+        createSpeakerList(ips);
+    }
+
+    public static void createSpeakerList(String [] ips){
+        if(!speakers.speakers.isEmpty()){
+            return;
+        }
 
         for (int i = 0; i < ips.length; i++) {
             speakers.addSpeaker(ips[i]);

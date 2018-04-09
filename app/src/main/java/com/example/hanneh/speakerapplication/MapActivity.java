@@ -32,7 +32,7 @@ public class MapActivity extends BaseMenuActivity {
     private Bitmap mBitmap;
     private ImageView mImageView;
     private TextView textView;
-    private Button btn;
+    private Button btn, settingsButton;
     public float x, y;
     private int color = Color.BLACK;
 
@@ -49,9 +49,10 @@ public class MapActivity extends BaseMenuActivity {
 
         mImageView = (findViewById(R.id.myimageview));
 
-
+        settingsButton = findViewById(R.id.settings);
 
         btn = findViewById(R.id.btn);
+        settingsButton.setVisibility(View.GONE);
 
         mImageView.setOnTouchListener(handleTouch);
         int vWidth = mImageView.getMaxWidth();
@@ -72,6 +73,8 @@ public class MapActivity extends BaseMenuActivity {
                 Log.e(TAG, String.valueOf(packet.getSize()));
             }
         });
+
+
 
 
     }
@@ -156,8 +159,26 @@ public class MapActivity extends BaseMenuActivity {
                     Log.e("TAG", "p" + x + y);
 
 
+                    settingsButton.setVisibility(View.VISIBLE);
 
-                    String ip = IpList.getIP(id);
+                    //Hämta IP för den jag klickat närmast
+                   final String ip = IpList.getIP(id);
+
+                   String [] ips = IpList.getIpList();
+                   MyAdapter.createSpeakerList(ips);
+
+
+                    settingsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(MapActivity.this, SpeakerActivity.class);
+                            intent.putExtra("ip", ip);
+                            startActivity(intent);
+
+
+                        }
+                    });
+
                     textView.setText(ip + " " + '\n' + "(" + getDecimalFormat(x) + ", " + getDecimalFormat(y)+ ")");
 
                     mPaint.setColor(Color.GREEN);
