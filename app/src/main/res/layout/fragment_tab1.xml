@@ -17,16 +17,56 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <ImageView
-        android:id="@+id/im2"
-        android:layout_width="397dp"
-        android:layout_height="203dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
 
+    <HorizontalScrollView
+        android:layout_width="368dp"
+        android:layout_height="216dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="96dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/setBestEq"
+        android:layout_width="61dp"
+        android:layout_height="64dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fabstop"
+        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintStart_toEndOf="@+id/fab"
         app:layout_constraintTop_toBottomOf="@+id/section_label"
-        app:layout_constraintVertical_bias="0.098" />
+        app:layout_constraintVertical_bias="0.398"
+        app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabstop"
+        android:layout_width="61dp"
+        android:layout_height="64dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_pause"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="61dp"
+        android:layout_height="64dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_media_play"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="157dp" />
 
 </android.support.constraint.ConstraintLayout>

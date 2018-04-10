@@ -55,9 +55,11 @@ public class EqActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    FloatingActionButton fab;
+
+
+
+
     Button btn;
-    AlertDialog.Builder builder;
     EditText editText;
     Editable numberOfIterations;
     ImageView mImageView;
@@ -103,6 +105,7 @@ public class EqActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        /*
         builder = new AlertDialog.Builder(EqActivity.this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -160,6 +163,7 @@ public class EqActivity extends AppCompatActivity {
             }
 
         });
+        */
 
     }
 
