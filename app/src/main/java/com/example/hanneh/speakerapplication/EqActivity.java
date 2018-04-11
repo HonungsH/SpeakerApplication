@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -92,6 +93,8 @@ public class EqActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -167,23 +170,18 @@ public class EqActivity extends AppCompatActivity {
 
     }
 
-    public void onDraw(Canvas canvas){
-
-    }
-
-    private void printHistogram(int[] array) {
-        for (int range = 0; range < array.length; range++) {
-            String label = range + " : ";
-            System.out.println(label + convertToStars(array[range]));
-        }
-    }
-
-    private String convertToStars(int num) {
-        StringBuilder builder = new StringBuilder();
-        for (int j = 0; j < num; j++) {
-            builder.append('*');
-        }
-        return builder.toString();
+    // This snippet hides the system bars.
+    private void hideSystemUI() {
+        // Set the IMMERSIVE flag.
+        // Set the content to appear under the system bars so that the content
+        // doesn't resize when the system bars hide and show.
+        getWindow().getDecorView().getRootView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
 
@@ -191,6 +189,13 @@ public class EqActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_eq, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        hideSystemUI();
         return true;
     }
 
@@ -203,6 +208,9 @@ public class EqActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if( id == R.id.homeAsUp){
             return true;
         }
 
@@ -275,6 +283,10 @@ public class EqActivity extends AppCompatActivity {
 
             }
         }
+
+
+
+
 
         @Override
         public int getCount() {

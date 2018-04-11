@@ -22,6 +22,7 @@ public class EqualizerTab2 extends Fragment {
     List<BarChartModel> barChartModelList;
     List<BarChartModel> barChartFrequencyBands;
     int[] frequencyBands;
+    BarChart barChartUpper;
 
 public EqualizerTab2(){
 
@@ -43,7 +44,7 @@ public EqualizerTab2(){
         barChartFrequencyBands = new ArrayList<>();
         frequencyBands = new int[] {63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000};
 
-        BarChart barChartUpper = (BarChart) rootView.findViewById(R.id.bar_chart_vertical);
+        barChartUpper = (BarChart) rootView.findViewById(R.id.bar_chart_vertical);
         barChartUpper.setBarMaxValue(100);
 
         BarChart barChartLower = rootView.findViewById(R.id.bar_chart_bands);
@@ -81,7 +82,7 @@ public EqualizerTab2(){
 
         }
 
-
+        updateBarChart();
 
 
         barChartLower.addBar(barChartFrequencyBands);
@@ -91,5 +92,21 @@ public EqualizerTab2(){
 
 
         return rootView;
+    }
+
+    //update fragment 2 with current EQ values
+
+    public void updateBarChart(){
+        BarChartModel barChartModelNew = new BarChartModel();
+        barChartModelNew.setBarValue(90);
+        //barChartModelNew.setBarColor(Color.parseColor("#CDDC39"));
+        barChartModelNew.setBarTag(null);
+        int index = 0;
+        barChartUpper.updateBar(index,barChartModelNew);
+
+    }
+
+    public void updateBarChartList(List<BarChart> list){
+    //update the entire graph in real time
     }
 }

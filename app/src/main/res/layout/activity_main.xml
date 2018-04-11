@@ -17,7 +17,7 @@
             android:id="@+id/textbehind"
             android:text="SpeakerApp"
             android:textSize="34sp"
-            android:textColor="@android:color/holo_blue_bright"
+            android:textColor="@android:color/white"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -60,10 +60,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/worldwide"
+                    android:layout_width="87dp"
+                    android:layout_height="113dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/findip" />
 
                 <TextView
                     android:text="IP"
@@ -105,10 +105,10 @@
 
                 <ImageView
                     android:id="@+id/imview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="94dp"
+                    android:layout_height="109dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/rss" />
+                    android:src="@drawable/testconnect" />
 
                 <TextView
                     android:id="@+id/textserver"
@@ -154,10 +154,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/maps"
+                    android:src="@drawable/maptest"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="94dp"
+                    android:layout_height="109dp" />
 
                 <TextView
                     android:text="MAP"
@@ -198,10 +198,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/transfer"
+                    android:src="@drawable/tunetest"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="94dp"
+                    android:layout_height="109dp" />
 
                 <TextView
                     android:text="EQ"
