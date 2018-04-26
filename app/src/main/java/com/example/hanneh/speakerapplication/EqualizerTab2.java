@@ -50,11 +50,11 @@ public EqualizerTab2(){
         BarChart barChartLower = rootView.findViewById(R.id.bar_chart_bands);
         barChartLower.setBarMaxValue(10);
 
-        //for loop for adding upper bars
-        for (int i = 1; i < 10; i++){
+        //for loop for adding upper bar
+        for (int i = 1;i < 10;i++){
             BarChartModel barChar = new BarChartModel();
             barChar.setBarValue(70);
-         //   barChar.setBarColor(Color.parseColor("#070707"));
+            barChar.setBarColor(Color.parseColor("#60718c"));
             barChar.setBarTag(null); //You can set your own tag to bar model
             barChar.setBarText(String.valueOf(i) + "dB");
             barChartModelList.add(barChar);
@@ -64,7 +64,7 @@ public EqualizerTab2(){
         barChartUpper.addBar(barChartModelList);
 
         //for loop for adding lower bars
-        for (int j = 1; j < 10; j++){
+        for (int j = 1;j < 10; j++){
             BarChartModel barChar2 = new BarChartModel();
             barChar2.setBarValue(0);
             barChar2.setBarColor(Color.parseColor("#ffffff"));
@@ -90,7 +90,6 @@ public EqualizerTab2(){
 
 
 
-
         return rootView;
     }
 
@@ -98,12 +97,12 @@ public EqualizerTab2(){
 
     public void updateBarChart(){
         BarChartModel barChartModelNew = new BarChartModel();
-        barChartModelNew.setBarValue(90);
+/*    barChartModelNew.setBarValue(90);
         //barChartModelNew.setBarColor(Color.parseColor("#CDDC39"));
         barChartModelNew.setBarTag(null);
         int index = 0;
         barChartUpper.updateBar(index,barChartModelNew);
-
+*/
     }
 
     public void updateBarChartList(List<BarChart> list){

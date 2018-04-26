@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity  {
     ImageButton playTestTone, startRecord;
     TextView display, timer;
     CardView dataB, connectServer, mapB, mip, eq;
-    connectToServer myConnect = null;
+  //  connectToServer myConnect = null;
     ProgressBar recordingProgressBar;
     int progress = 0;
     int progressValue;
@@ -79,16 +79,22 @@ public class MainActivity extends AppCompatActivity  {
     ImageView imView;
     Handler handler = new Handler();
 
+
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
+
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         hideSystemUI();
 
 
-        animationUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-        animationDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+
 
 
         // display = findViewById(R.id.display);
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity  {
         connectServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                Intent intent = new Intent(MainActivity.this, ServerActivity.class);
                 MainActivity.this.startActivity(intent);
             }
         });
@@ -310,6 +316,11 @@ public class MainActivity extends AppCompatActivity  {
 */
     }
 
+    public void onResume(){
+        super.onResume();
+        hideSystemUI();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void printAllIpInNetwork() {
 
@@ -402,6 +413,8 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
+
+        /*
         protected void establishConnectionToServer(){
 
                 String s = "No Breakfast is wrong Breakfast";
@@ -427,7 +440,7 @@ public class MainActivity extends AppCompatActivity  {
                 // It's already running
 
 
-                /*
+
                 if (myConnect.getStatus() == AsyncTask.Status.RUNNING){
                     myConnect.cancel(true);
                     Log.e(MAJS, "CONNECTION STOPPED");
@@ -436,36 +449,10 @@ public class MainActivity extends AppCompatActivity  {
                     myConnect = new connectToServer();
                     myConnect.execute();
                 }
-                */
+
         }
-        class connectToServer extends AsyncTask<Void, Void, Void> {
+        */
 
-         private static final String host = "172.25.12.147";
-         private static final int port = 10200;
-
-
-            protected Void doInBackground(Void... voids) {
-                ServerCommunication communication = new ServerCommunication(host, port);
-                Packet hello = new Packet();
-                hello.addHeader((byte)0x00);
-                hello.addString("Hannebajs");
-                hello.finalize();
-                while(true){
-                    communication.send(hello);
-                    SystemClock.sleep(2000);
-                    Packet packet = communication.receive();
-                    Log.e(MAJS, String.valueOf(packet.getSize()));
-                    if (isCancelled()){
-                        break;
-                    }
-                }
-
-                communication.close();
-
-                return null;
-
-            }
-        }
 
 
     // This snippet hides the system bars.

@@ -3,6 +3,7 @@ package com.example.hanneh.speakerapplication;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -28,6 +30,7 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -51,13 +54,16 @@ public class EqualizerTab1 extends Fragment {
     EditText editText;
     Editable numberOfIterations;
 
-    FloatingActionButton fab, fabstop, setBestEq, fabreset;
+    FloatingActionButton fabplay, fabaxis, setBestEq, fabreset, fabonline;
 
     AlertDialog.Builder builder;
     HorizontalScrollView hz;
     List<BarChartModel> barChartModelList;
     List<BarChartModel> barChartFrequencyBands;
     int[] frequencyBands;
+    boolean isPressed = false;
+    boolean playPressed = false;
+    boolean axisEffects = false;
 
     public EqualizerTab1() {
 
@@ -86,7 +92,7 @@ public class EqualizerTab1 extends Fragment {
         for (int i = 1; i < 10; i++){
             BarChartModel barChar = new BarChartModel();
             barChar.setBarValue(70);
-            //   barChar.setBarColor(Color.parseColor("#070707"));
+             barChar.setBarColor(Color.parseColor("#60718c"));
             barChar.setBarTag(null); //You can set your own tag to bar model
             barChar.setBarText(String.valueOf(i) + "dB");
             barChartModelList.add(barChar);
@@ -100,7 +106,7 @@ public class EqualizerTab1 extends Fragment {
         for (int j = 1; j < 10; j++){
             BarChartModel barChar2 = new BarChartModel();
             barChar2.setBarValue(0);
-            barChar2.setBarColor(Color.parseColor("#ffffff"));
+            barChar2.setBarColor(Color.parseColor("#60718c"));
 
             if(frequencyBands[j-1] >= 1000){
                 String band = String.valueOf(frequencyBands[j-1]);
@@ -149,12 +155,23 @@ public class EqualizerTab1 extends Fragment {
 
 
 
-        fabstop = rootView.findViewById(R.id.fabstop);
+        fabaxis = rootView.findViewById(R.id.fabstop);
 
-        fabstop.setOnClickListener(new View.OnClickListener() {
+        fabaxis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //add method to stop iterations.
+                //add method to enable/disable axis effects
+
+                if (!axisEffects){
+                    axisEffects = true;
+                    fabaxis.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.angularoff));
+
+
+                }
+                else {
+                    axisEffects = false;
+                    fabaxis.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.angular));
+                }
             }
         });
 
@@ -165,9 +182,9 @@ public class EqualizerTab1 extends Fragment {
 
         builder = new AlertDialog.Builder(getActivity());
 
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fabplay = (FloatingActionButton) rootView.findViewById(R.id.fabplay);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
 
@@ -190,6 +207,7 @@ public class EqualizerTab1 extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
+                        hideSystemUI();
                     }
                 });
 
@@ -199,13 +217,26 @@ public class EqualizerTab1 extends Fragment {
 
                         // Toast.makeText(EqActivity.this, "Number: " + numberOfIterations.toString(), Toast.LENGTH_LONG).show();
 
-                        Snackbar.make(view, "Optimizing EQ values in " + numberOfIterations.toString() + " iterations. Please wait for the process to finish.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Optimizing EQ values in " + numberOfIterations.toString() + " iterations. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
 
-                        view.setBackgroundResource(R.drawable.pause);  //Fungerar ej?
-                        hideSystemUI();
-                        ViewPager pager = getActivity().findViewById(R.id.container);
-                        pager.setCurrentItem(1);
+                        if (!playPressed){
+                                playPressed = true;
+                                fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.stop));
+                            fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
+                            hideSystemUI();
+                            ViewPager pager = getActivity().findViewById(R.id.container);
+                            pager.setCurrentItem(1);
+
+
+                        }
+                        else {
+                            playPressed = false;
+                            fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.play));
+
+                            fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                        }
+
 
 
                     }
@@ -224,12 +255,54 @@ public class EqualizerTab1 extends Fragment {
         });
 
 
+
+
         setBestEq = rootView.findViewById(R.id.setBestEq);
+      //  setBestEq.setBackgroundTintList(mColorStateList);
         setBestEq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int eqValue = setBestEq();
-                text.setText("New best EQ set with score: " + eqValue);
+                if(!isPressed){
+                    isPressed = true;
+                        int eqValue = setBestEq();
+                        text.setText("EQ ON");
+
+
+                    setBestEq.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.minus));
+
+                    setBestEq.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
+                }
+
+
+                else{
+                    isPressed = false;
+
+                    text.setText("EQ OFF");
+                    setBestEq.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plus));
+
+                    setBestEq.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff99cc00")));
+
+
+                }
+
+
+
+
+
+
+
+
+            }
+        });
+
+
+
+        fabonline = rootView.findViewById(R.id.fabonline);
+
+        fabonline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                text.setText("Bla bla is ONLINE");
             }
         });
 
@@ -239,6 +312,7 @@ public class EqualizerTab1 extends Fragment {
             public void onClick(View view) {
                 if (resetSystem()) {
                     text.setText("RESET SUCCESSFULL. ALL EQ VALUES LOST");
+                    Toast.makeText(getActivity().getApplicationContext(), "Reset", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -246,6 +320,13 @@ public class EqualizerTab1 extends Fragment {
 
         return rootView;
     }
+
+    public void onResume(){
+        super.onResume();
+        hideSystemUI();
+    }
+
+
 
     private boolean resetSystem() {
         return true;

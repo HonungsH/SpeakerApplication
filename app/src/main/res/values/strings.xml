@@ -7,6 +7,15 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
-
+    <string name="slide_1_title">Welcome to Speaker application</string>
+    <string name="slide_1_desc">"This is a short guide to help you navigate through the app. Press next to continue or skip to enter.</string>
+    <string name="slide_2_title">"Server</string>
+    <string name="slide_2_desc">Press SERVER to connect to the server. This is required to perform any actions with the loudspeakers and/or equalization.</string>
+    <string name="slide_3_title">List of devices</string>
+    <string name="slide_3_desc">Lists all loudspeaker devices in current network. Press one to enter settings.</string>
+    <string name="slide_4_title">Localization map</string>
+    <string name="slide_4_desc">Provides a map of all nearby loudspeakers represented with dots.</string>
+    <string name="slide_5_title">Equalizer</string>
+    <string name="slide_5_desc">This contains all equalization options as well as graphs with current EQ settings.</string>
 
 </resources>

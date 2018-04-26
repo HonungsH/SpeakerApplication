@@ -7,7 +7,7 @@
     <stroke
         android:width="2dip"
 
-        android:drawable="@drawable/edit"/>
+        android:drawable="@drawable/pause"/>
     <padding
         android:bottom="4dp"
 

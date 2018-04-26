@@ -29,7 +29,7 @@ public class BaseMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.a:
+            case R.id.home:
                 Intent inte = new Intent(BaseMenuActivity.this, MainActivity.class);
                 BaseMenuActivity.this.startActivity(inte);
                 return true;

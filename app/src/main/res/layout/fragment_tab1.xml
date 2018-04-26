@@ -21,7 +21,7 @@
         barchart:bar_color="@color/colorPrimary"
         barchart:bar_max_value="100"
         barchart:bar_show_animation="true"
-        barchart:bar_show_auto_color="true"
+        barchart:bar_show_auto_color="false"
         barchart:bar_show_value="true"
         barchart:bar_spaces="5dp"
         barchart:bar_text_color="#808080"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        barchart:bar_color="@color/colorPrimary"
+
         barchart:bar_max_value="100"
         barchart:bar_show_animation="true"
         barchart:bar_show_auto_color="false"
@@ -103,21 +103,36 @@
             android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                app:backgroundTint="@android:color/holo_red_light"
+                android:id="@+id/fabonline"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                app:backgroundTint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/rss"
+
+                tools:layout_editor_absoluteY="175dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabplay"
+                app:backgroundTint="@android:color/white"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:layout_margin="40dp"
 
-                app:srcCompat="@android:drawable/ic_media_play"
+                app:srcCompat="@drawable/tunetest"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="157dp" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabstop"
-                app:backgroundTint="@android:color/holo_red_light"
+                app:backgroundTint="@android:color/white"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_alignParentEnd="true"
@@ -126,7 +141,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/stop"
+                app:srcCompat="@drawable/angular"
                 tools:layout_editor_absoluteY="175dp" />
 
             <android.support.design.widget.FloatingActionButton
@@ -137,14 +152,16 @@
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                app:backgroundTint="@android:color/holo_red_light"
+                app:backgroundTint="@android:color/holo_green_light"
                 android:layout_margin="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fabstop"
                 app:layout_constraintHorizontal_bias="0.575"
                 app:layout_constraintStart_toEndOf="@+id/fab"
                 app:layout_constraintVertical_bias="0.345"
-                app:srcCompat="@drawable/checktest" />
+                app:srcCompat="@drawable/plus" />
+
+
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabreset"
@@ -178,7 +195,6 @@
         android:layout_height="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="TextView"
         android:textAlignment="center"
         android:textSize="25dp"
         android:textStyle="bold"

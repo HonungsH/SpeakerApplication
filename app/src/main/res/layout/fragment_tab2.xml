@@ -36,7 +36,7 @@
         barchart:bar_color="@color/colorPrimary"
         barchart:bar_max_value="100"
         barchart:bar_show_animation="true"
-        barchart:bar_show_auto_color="true"
+        barchart:bar_show_auto_color="false"
         barchart:bar_show_value="true"
         barchart:bar_spaces="5dp"
         barchart:bar_text_color="#808080"
