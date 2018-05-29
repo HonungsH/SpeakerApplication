@@ -26,9 +26,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +55,8 @@ public class EqualizerTab1 extends Fragment {
 
     static View rootView;
     EditText editText;
-    Editable numberOfIterations;
 
-    FloatingActionButton fabplay, fabaxis, setBestEq, fabreset, fabonline;
+    FloatingActionButton fabplay, fabaxis, fabreset, fabonline;
 
     AlertDialog.Builder builder;
     HorizontalScrollView hz;
@@ -75,7 +77,10 @@ public class EqualizerTab1 extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_tab1, group, false);
 
-        updateStartEq();
+
+
+
+
 
         //Create a list with the Barchartmodels
         barChartModelList = new ArrayList<>();
@@ -132,15 +137,32 @@ public class EqualizerTab1 extends Fragment {
 
 
 
+        Spinner dropdownList = rootView.findViewById(R.id.spinner);
+
+        String[] items = new String[]{"Press here to select Point of Interest", "1", "2", "3"};
 
 
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
 
+        dropdownList.setAdapter(adapter);
 
+        dropdownList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.v("item", (String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
 
 
         text = rootView.findViewById(R.id.section_label);
-        text.setText("Equalizer Values before start");
+        text.setText("Press Start to start calibration process");
 
 
         score_text = rootView.findViewById(R.id.score_text);
@@ -180,7 +202,7 @@ public class EqualizerTab1 extends Fragment {
 
         // onDraw(mCanvas);
 
-        builder = new AlertDialog.Builder(getActivity());
+
 
         fabplay = (FloatingActionButton) rootView.findViewById(R.id.fabplay);
 
@@ -189,42 +211,19 @@ public class EqualizerTab1 extends Fragment {
             public void onClick(final View view) {
 
 
-                builder = new AlertDialog.Builder(getActivity());
-
-                builder.setTitle("Number of iterations");
 
 
-                LayoutInflater inflater = getLayoutInflater();
-                View dialoglayout = inflater.inflate(R.layout.alert_dialog, null);
-
-                builder.setView(dialoglayout);
-                editText = dialoglayout.findViewById(R.id.editText);
-                numberOfIterations = editText.getText();
 
 
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
-                        hideSystemUI();
-                    }
-                });
-
-                builder.setPositiveButton("Run", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        // Toast.makeText(EqActivity.this, "Number: " + numberOfIterations.toString(), Toast.LENGTH_LONG).show();
-
-                        Snackbar.make(view, "Optimizing EQ values in " + numberOfIterations.toString() + " iterations. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
+                        Snackbar.make(view, "Optimizing EQ values. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
 
                         if (!playPressed){
                                 playPressed = true;
                                 fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.stop));
                             fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
-                            hideSystemUI();
+
                             ViewPager pager = getActivity().findViewById(R.id.container);
                             pager.setCurrentItem(1);
 
@@ -245,64 +244,12 @@ public class EqualizerTab1 extends Fragment {
 
 
 
-
-
-                builder.show();
-
-
-            }
-
-        });
-
-
-
-
-        setBestEq = rootView.findViewById(R.id.setBestEq);
-      //  setBestEq.setBackgroundTintList(mColorStateList);
-        setBestEq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isPressed){
-                    isPressed = true;
-                        int eqValue = setBestEq();
-                        text.setText("EQ ON");
-
-
-                    setBestEq.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.minus));
-
-                    setBestEq.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
-                }
-
-
-                else{
-                    isPressed = false;
-
-                    text.setText("EQ OFF");
-                    setBestEq.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plus));
-
-                    setBestEq.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff99cc00")));
-
-
-                }
-
-
-
-
-
-
-
-
-            }
-        });
-
-
-
         fabonline = rootView.findViewById(R.id.fabonline);
 
         fabonline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                text.setText("Bla bla is ONLINE");
+                text.setText("2 microphones online " + '\n' + "and" + '\n' + "2 loudspeakers online");
             }
         });
 
@@ -353,6 +300,9 @@ public class EqualizerTab1 extends Fragment {
 
     //Updates fragment 1 with EQ values
     public void updateStartEq(){
+        //uppdatera
+
+
 
 }
 }

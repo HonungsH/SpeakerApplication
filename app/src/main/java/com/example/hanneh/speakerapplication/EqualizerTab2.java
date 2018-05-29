@@ -108,4 +108,14 @@ public EqualizerTab2(){
     public void updateBarChartList(List<BarChart> list){
     //update the entire graph in real time
     }
+
+
+    public void showEQValues(){
+
+
+    }
+
+    public void showSDandGain(){
+
+    }
 }
