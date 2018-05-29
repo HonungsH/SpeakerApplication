@@ -6,21 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ServerActivity">
 
-    <android.support.design.widget.FloatingActionButton
+
+
+    <Button
         android:id="@+id/fabconnect"
-        android:layout_width="192dp"
-        android:layout_height="230dp"
+        android:layout_width="133dp"
+        android:layout_height="149dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@android:color/white"
-        android:clickable="true"
+        android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/wifi" />
-
-
 </android.support.constraint.ConstraintLayout>

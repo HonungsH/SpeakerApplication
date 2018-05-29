@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -216,8 +217,7 @@ public class EqualizerTab1 extends Fragment {
 
 
 
-                        Snackbar.make(view, "Optimizing EQ values. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
-                                .setAction("Action", null).show();
+
 
                         if (!playPressed){
                                 playPressed = true;
@@ -226,6 +226,9 @@ public class EqualizerTab1 extends Fragment {
 
                             ViewPager pager = getActivity().findViewById(R.id.container);
                             pager.setCurrentItem(1);
+                            Snackbar.make(view, "Optimizing EQ values. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
+                                    .setAction("Action", null).show();
+                            startEq();
 
 
                         }
@@ -299,10 +302,9 @@ public class EqualizerTab1 extends Fragment {
 
 
     //Updates fragment 1 with EQ values
-    public void updateStartEq(){
-        //uppdatera
+    public void startEq(){
+            ServerRunCalibration.parseFromFile();
 
 
-
-}
+    }
 }

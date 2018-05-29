@@ -1,5 +1,6 @@
 package com.example.hanneh.speakerapplication;
 
+import java.nio.CharBuffer;
 import java.util.*;
 import java.nio.ByteBuffer;
 
@@ -133,5 +134,23 @@ public class Packet {
         for (int i = 0; i < bytes.length; i++) {
             packet_.add(bytes[i]);
         }
+    }
+
+    public void addBool(boolean b) {
+        packet_.add((byte)(b ? 1 : 0));
+    }
+
+    public float getFloat() {
+        int length = getInt();
+
+        byte[] bytes = new byte[length];
+
+        for (int i = 0; i < length; i++) {
+            bytes[i] = packet_.get(read_++);
+        }
+
+        CharBuffer buffer = ByteBuffer.wrap(bytes).asCharBuffer();
+
+        return Float.parseFloat(buffer.toString());
     }
 }

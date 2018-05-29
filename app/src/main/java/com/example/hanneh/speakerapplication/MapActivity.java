@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Math.sqrt;
@@ -35,6 +36,8 @@ public class MapActivity extends BaseMenuActivity {
     private Button btn, settingsButton;
     public float x, y;
     private int color = Color.BLACK;
+    ArrayList<Float> coords;
+    int imheight, imwidth;
 
 
 
@@ -44,12 +47,17 @@ public class MapActivity extends BaseMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         points = new float[] {150f, 200f, 400f, 130f};
-
-        textView = findViewById(R.id.coolText);
-
         mImageView = (findViewById(R.id.myimageview));
 
+        textView = findViewById(R.id.coolText);
+        imheight = mImageView.getMaxHeight();
+        imwidth = mImageView.getMaxWidth();
+        Log.e(TAG, String.valueOf(imheight) +" "+ String.valueOf(imwidth));
+
+
+
         settingsButton = findViewById(R.id.settings);
+
 
         btn = findViewById(R.id.btn);
         settingsButton.setVisibility(View.GONE);
@@ -69,8 +77,29 @@ public class MapActivity extends BaseMenuActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Packet packet = ServerRunLocalization.run(IpList.getIpList());
-                Log.e(TAG, String.valueOf(packet.getSize()));
+                coords = new ArrayList<>();
+            Packet packet =  ServerRunLocalization.run(IpList.getIpList());
+            packet.getByte();
+            int speakers = packet.getInt();
+
+            for (int i = 0; i < speakers; i++){
+                String ip = packet.getString();
+                int dims = packet.getInt();
+                for (int j = 0; j < dims; j++){
+                    float f = packet.getFloat();
+                    coords.add(f);
+
+                }
+                int z = packet.getInt();
+                for (int k = 0; k < z; k++){
+                    packet.getString();
+                    packet.getFloat();
+                }
+
+
+            }
+
+
             }
         });
 

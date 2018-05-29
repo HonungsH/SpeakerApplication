@@ -24,13 +24,14 @@ public class ServerRunLocalization {
         protected Void doInBackground(Void... voids) {
             ServerCommunication communication = new ServerCommunication(MainActivity.host, MainActivity.port);
             Packet p = new Packet();
-            p.addHeader((byte)3);
+            p.addHeader((byte)1);
+            p.addBool(true);
             p.addInt(ips.length);
 
             for (int i = 0; i < ips.length; i++){
                 p.addString(ips[i]);
             }
-            p.addInt(0);
+            //p.addInt(0);
             p.finalize();
             communication.send(p);
             answer_ = communication.receive();

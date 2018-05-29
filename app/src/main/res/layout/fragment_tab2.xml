@@ -80,7 +80,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Decibel"
+        android:text="dB"
         android:textColor="#000000"
         android:textSize="35sp"
         android:textStyle="bold"

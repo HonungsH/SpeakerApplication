@@ -37,7 +37,7 @@ public EqualizerTab2(){
 
 
         text = rootView.findViewById(R.id.section_label2);
-        text.setText("TRYING STUFF HEHEHEHEHE");
+        text.setText("Set confirmation text here");
 
         //Create a list with the Barchartmodels
         barChartModelList = new ArrayList<>();

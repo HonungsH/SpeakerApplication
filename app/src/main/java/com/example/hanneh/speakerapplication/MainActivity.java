@@ -113,8 +113,10 @@ public class MainActivity extends AppCompatActivity  {
         connectServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e(DEBUG, "this doesnt work");
                 Intent intent = new Intent(MainActivity.this, ServerActivity.class);
                 MainActivity.this.startActivity(intent);
+                Log.e(DEBUG, "this doesnt work");
             }
         });
 
