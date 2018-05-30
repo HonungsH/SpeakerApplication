@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by hanneh on 3/20/18.
  */
@@ -19,21 +21,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PersonViewHolder>{
 
     public static SpeakerSettings speakers = new SpeakerSettings();
     private static final String TAG = "debug";
-    String [] ips;
+    ArrayList<String> ips;
 
-    MyAdapter(String[] ips) {
+    MyAdapter(ArrayList<String> ips) {
         this.ips = ips;
 
         createSpeakerList(ips);
     }
 
-    public static void createSpeakerList(String [] ips){
-        if(!speakers.speakers.isEmpty()){
+    public static void createSpeakerList(ArrayList<String> ips){
+        if(!speakers.speakers.isEmpty()) {
             return;
         }
 
-        for (int i = 0; i < ips.length; i++) {
-            speakers.addSpeaker(ips[i]);
+        for (int i = 0; i < ips.size(); i++) {
+            speakers.addSpeaker(ips.get(i));
         }
     }
 
@@ -73,7 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PersonViewHolder>{
     @Override
     public void onBindViewHolder(MyAdapter.PersonViewHolder holder, final int position) {
 
-      final String ip = ips[position];
+      final String ip = ips.get(position);
        holder.displayIp.setText(ip);
 
 
@@ -98,8 +100,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PersonViewHolder>{
 
     @Override
     public int getItemCount() {
-        Log.e(TAG, String.valueOf(ips.length));
-        return ips.length;
+        Log.e(TAG, String.valueOf(ips.size()));
+        return ips.size();
     }
 
 }

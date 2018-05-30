@@ -78,34 +78,31 @@ public class MapActivity extends BaseMenuActivity {
             @Override
             public void onClick(View view) {
                 coords = new ArrayList<>();
-            Packet packet =  ServerRunLocalization.run(IpList.getIpList());
-            packet.getByte();
-            int speakers = packet.getInt();
+                ServerContact contact = new ServerContact();
 
-            for (int i = 0; i < speakers; i++){
-                String ip = packet.getString();
-                int dims = packet.getInt();
-                for (int j = 0; j < dims; j++){
-                    float f = packet.getFloat();
-                    coords.add(f);
+                Packet packet = contact.request(contact.createLocalization(IpList.getSpeakerIPs()));
+                packet.getByte();
 
-                }
-                int z = packet.getInt();
-                for (int k = 0; k < z; k++){
+                int speakers = packet.getInt();
+
+                for (int i = 0; i < speakers; i++){
                     packet.getString();
-                    packet.getFloat();
+
+                    int dims = packet.getInt();
+
+                    for (int j = 0; j < dims; j++) {
+                        coords.add(packet.getFloat());
+                    }
+
+                    int z = packet.getInt();
+
+                    for (int k = 0; k < z; k++){
+                        packet.getString();
+                        packet.getFloat();
+                    }
                 }
-
-
-            }
-
-
             }
         });
-
-
-
-
     }
 
 
@@ -121,16 +118,9 @@ public class MapActivity extends BaseMenuActivity {
         mPaint.setStrokeWidth(120);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
 
-
        canvas.drawPoints(points, mPaint);
 
-
-
         textView.setText(("Each dot represents a speaker in the room. Press button \"Draw\" to redraw"));
-
-
-
-
     }
 
     public int compareFloatDistance(float x, float y){
@@ -187,14 +177,12 @@ public class MapActivity extends BaseMenuActivity {
 
                     Log.e("TAG", "p" + x + y);
 
-
                     settingsButton.setVisibility(View.VISIBLE);
 
                     //Hämta IP för den jag klickat närmast
-                   final String ip = IpList.getIP(id);
+                   final String ip = IpList.getSpeakerIPs().get(id);
 
-                   String [] ips = IpList.getIpList();
-                   MyAdapter.createSpeakerList(ips);
+                   MyAdapter.createSpeakerList(IpList.getSpeakerIPs());
 
 
                     settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -212,10 +200,6 @@ public class MapActivity extends BaseMenuActivity {
 
                     mPaint.setColor(Color.GREEN);
                     mCanvas.drawPoint(points[id * 2], points[id*2 + 1], mPaint);
-
-
-
-
 
                     break;
                 case MotionEvent.ACTION_MOVE:

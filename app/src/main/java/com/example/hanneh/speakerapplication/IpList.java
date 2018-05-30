@@ -6,33 +6,25 @@ import java.util.ArrayList;
  * Created by hanneh on 3/20/18.
  */
 
-    public final class IpList {
-        static ArrayList<String> ipList;
+public final class IpList {
+    private static ArrayList<String> speaker_ips_ = new ArrayList<>();
+    private static ArrayList<String> mic_ips_ = new ArrayList<>();
 
+    public static void setSpeakerIPs(ArrayList<String> ips) {
+        speaker_ips_ = ips;
+    }
 
-        //Communicate with server to get active IPs
-    //Plats 0 i IPLIST == id 0
+    public static ArrayList<String> getSpeakerIPs() {
+        return speaker_ips_;
+    }
 
-    public static String[] getIpList() {
+    public static void setMicrophoneIPs(ArrayList<String> ips) {
+        mic_ips_ = ips;
+    }
 
-        return new String[]  {
-                "172.25.9.38",      //id == 0
-                "172.25.13.200",    //id == 1
-                "172.25.14.27"      //id == 2
-        };
+    public static ArrayList<String> getMicrophoneIPs() {
+        return mic_ips_;
     }
 
 
-    //Add IPs to an ArrayList with ID as index
-    public void addIPwithID(int id){
-        ipList.add(id, "IP here");
-    }
-
-    public ArrayList<String> getIDList(){
-        return ipList;
-    }
-
-    public static String getIP(int id){
-        return getIpList()[id];
-    }
 }

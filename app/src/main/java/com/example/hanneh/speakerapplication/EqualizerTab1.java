@@ -1,17 +1,7 @@
 package com.example.hanneh.speakerapplication;
 
-
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,8 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,25 +23,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import me.ithebk.barchart.BarChart;
-import me.ithebk.barchart.BarChartModel;
 import me.ithebk.barchart.BarChart;
 import me.ithebk.barchart.BarChartModel;
 
 import static android.content.ContentValues.TAG;
 
-
 public class EqualizerTab1 extends Fragment {
     TextView text, score_text;
-
-    static ImageView mImageView;
-
     static View rootView;
     EditText editText;
 
@@ -69,19 +51,12 @@ public class EqualizerTab1 extends Fragment {
     boolean axisEffects = false;
 
     public EqualizerTab1() {
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup group, @Nullable Bundle savedstate) {
-
         rootView = inflater.inflate(R.layout.fragment_tab1, group, false);
-
-
-
-
-
 
         //Create a list with the Barchartmodels
         barChartModelList = new ArrayList<>();
@@ -104,7 +79,6 @@ public class EqualizerTab1 extends Fragment {
             barChartModelList.add(barChar);
         }
 
-
         //Add all the created bars to the list
         barChartUpper.addBar(barChartModelList);
 
@@ -114,35 +88,22 @@ public class EqualizerTab1 extends Fragment {
             barChar2.setBarValue(0);
             barChar2.setBarColor(Color.parseColor("#60718c"));
 
-            if(frequencyBands[j-1] >= 1000){
+            if(frequencyBands[j-1] >= 1000) {
                 String band = String.valueOf(frequencyBands[j-1]);
                 band = band.replaceAll("000", "K");
                 barChar2.setBarText(band + '\n' + "Hz");
-            }
-            else{
+            } else {
                 barChar2.setBarText(String.valueOf(frequencyBands[j-1]) + '\n' +"Hz");
-
             }
-            barChartFrequencyBands.add(barChar2);
 
+            barChartFrequencyBands.add(barChar2);
         }
 
-
-
-
         barChartLower.addBar(barChartFrequencyBands);
-
-
-
-
-
-
 
         Spinner dropdownList = rootView.findViewById(R.id.spinner);
 
         String[] items = new String[]{"Press here to select Point of Interest", "1", "2", "3"};
-
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
 
@@ -161,7 +122,6 @@ public class EqualizerTab1 extends Fragment {
             }
         });
 
-
         text = rootView.findViewById(R.id.section_label);
         text.setText("Press Start to start calibration process");
 
@@ -175,8 +135,6 @@ public class EqualizerTab1 extends Fragment {
         hz.setScrollbarFadingEnabled(false);
 
         hideSystemUI();
-
-
 
         fabaxis = rootView.findViewById(R.id.fabstop);
 
@@ -200,52 +158,31 @@ public class EqualizerTab1 extends Fragment {
 
         Log.e(TAG, "ONCREATE");
 
-
-        // onDraw(mCanvas);
-
-
-
         fabplay = (FloatingActionButton) rootView.findViewById(R.id.fabplay);
 
         fabplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                if (!playPressed){
+                    playPressed = true;
+                    fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.stop));
+                    fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
 
+                    ViewPager pager = getActivity().findViewById(R.id.container);
+                    pager.setCurrentItem(1);
+                    Snackbar.make(view, "Optimizing EQ values. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
 
+                    // EQ FROM HERE
+                    startEq();
+                } else {
+                    playPressed = false;
+                    fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.play));
 
-
-
-
-
-
-
-                        if (!playPressed){
-                                playPressed = true;
-                                fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.stop));
-                            fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffff4444")));
-
-                            ViewPager pager = getActivity().findViewById(R.id.container);
-                            pager.setCurrentItem(1);
-                            Snackbar.make(view, "Optimizing EQ values. Please wait for the process to finish.", Snackbar.LENGTH_SHORT)
-                                    .setAction("Action", null).show();
-                            startEq();
-
-
-                        }
-                        else {
-                            playPressed = false;
-                            fabplay.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.play));
-
-                            fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
-                        }
-
-
-
-                    }
-                });
-
-
-
+                    fabplay.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                }
+            }
+        });
 
         fabonline = rootView.findViewById(R.id.fabonline);
 
@@ -267,7 +204,6 @@ public class EqualizerTab1 extends Fragment {
             }
         });
 
-
         return rootView;
     }
 
@@ -275,8 +211,6 @@ public class EqualizerTab1 extends Fragment {
         super.onResume();
         hideSystemUI();
     }
-
-
 
     private boolean resetSystem() {
         return true;
@@ -300,11 +234,42 @@ public class EqualizerTab1 extends Fragment {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
+    public static void parseFromFile() {
+        ArrayList<String> speaker_ips = new ArrayList<>();
+        ArrayList<String> mic_ips = new ArrayList<>();
+
+        try {
+
+            File f_speaker = new File("/storage/emulated/0/" + "speaker_config");
+            Scanner scan = new Scanner(f_speaker);
+
+            File f_mic = new File("/storage/emulated/0/" + "speaker_config");
+            Scanner scan2 = new Scanner(f_mic);
+
+
+            while (scan.hasNextLine()) {
+                speaker_ips.add(scan.nextLine());
+            }
+
+            while(scan2.hasNextLine()) {
+                mic_ips.add(scan2.nextLine());
+            }
+
+            IpList.setSpeakerIPs(speaker_ips);
+            IpList.setMicrophoneIPs(mic_ips);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     //Updates fragment 1 with EQ values
-    public void startEq(){
-            ServerRunCalibration.parseFromFile();
+    public void startEq() {
+        parseFromFile();
 
+        // Ask server for calibration
+        ServerContact contact = new ServerContact();
+        Packet answer = contact.request(contact.createCalibration(IpList.getSpeakerIPs(), IpList.getMicrophoneIPs()));
 
+        Log.e(TAG, "Got calibration answer from Server!");
     }
 }

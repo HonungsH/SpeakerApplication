@@ -10,7 +10,7 @@ public class RecyclerViewActivity extends BaseMenuActivity {
 
     private static final String TAG = "debug";
     private RecyclerView rv;
-    private String[] _ips;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,9 +24,7 @@ public class RecyclerViewActivity extends BaseMenuActivity {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        _ips = IpList.getIpList();
-
-        MyAdapter adapter = new MyAdapter(_ips);
+        MyAdapter adapter = new MyAdapter(IpList.getSpeakerIPs());
         Log.e(TAG, "kom jag hit");
         rv.setAdapter(adapter);
     }

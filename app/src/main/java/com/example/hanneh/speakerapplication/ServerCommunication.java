@@ -12,8 +12,6 @@ public class ServerCommunication {
     public static final String WARNING = "OUR_DEBUG";
 
     private Socket socket_;
-    private String host_;
-    private int port_;
 
     private DataInputStream in_stream_;
     private DataOutputStream out_stream_;
@@ -28,9 +26,6 @@ public class ServerCommunication {
 
             return;
         }
-
-        host_ = host;
-        port_ = port;
 
         try {
             in_stream_ = new DataInputStream(socket_.getInputStream());
